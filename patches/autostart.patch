@@ -1,0 +1,33 @@
+Index: dwm-patches/dwm/dwm.c
+===================================================================
+--- dwm-patches.orig/dwm/dwm.c
++++ dwm-patches/dwm/dwm.c
+@@ -194,6 +194,7 @@ static void resizeclient(Client *c, int
+ static void resizemouse(const Arg *arg);
+ static void restack(Monitor *m);
+ static void run(void);
++static void runAutostart(void);
+ static void scan(void);
+ static Bool sendevent(Client *c, Atom proto);
+ static void sendmon(Client *c, Monitor *m);
+@@ -1357,6 +1358,12 @@ run(void) {
+ }
+ 
+ void
++runAutostart(void) {
++	system("cd ~/.dwm; ./autostart_blocking.sh");
++	system("cd ~/.dwm; ./autostart.sh &");
++}
++
++void
+ scan(void) {
+ 	unsigned int i, num;
+ 	Window d1, d2, *wins = NULL;
+@@ -2065,6 +2072,7 @@ main(int argc, char *argv[]) {
+ 	checkotherwm();
+ 	setup();
+ 	scan();
++	runAutostart();
+ 	run();
+ 	cleanup();
+ 	XCloseDisplay(dpy);
